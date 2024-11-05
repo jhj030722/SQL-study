@@ -33,3 +33,32 @@ FROM RankedRest
 WHERRE rnk = 1
 -- RANK 값이 1인 = FAVORITES이 가장 높은  행만 선택. 
 ORDER BY FOOD_TYPE DESC;
+```
+
+- `ROW_NUMBER()`를 사용하면 동일한 논리를 간단히 확장할 수 있습니다. 예를 들어, 두 번째로 높은 FAVORITES 값을 선택하거나, 순위를 기반으로 추가 분석을 할 때 더 쉽게 확장할 수 있습니다.
+- 서브쿼리 없이도 여러 기준을 적용해 정렬하고 순위를 부여할 수 있으므로 향후 요구사항 변경에 대비하기가 더 쉽습니다.
+
+# 문제 2; 
+
+```sql
+-- 2022년도 한해 평가 점수가 가장 높은 사원 정보를 조회
+SELECT G.SCORE, G.EMP_NO, E.EMP_NAME, E.POSITION, E.EMAIL
+FROM HR_DEPARTMENT AS D
+-- 부서 테이블과 사원 테이블 조인
+JOIN HR_EMPLOYEES AS E
+-- 각 직원이 어느 부서에 속해있는지
+ON D.DEPT_ID = E.DEPT_ID
+-- GRADE 테이블로부터 점수 계산하는 서브쿼리(G)와 조인
+JOIN ( -- RANK 윈도우 함수 사용: SCORE을 Order 하여 내림차순 순위 매김
+    SELECT EMP_NO, SCORE, RANK() OVER (ORDER BY SCORE DESC) AS RANKING
+    FROM ( -- 점수를 계산하기 위한 두번째 서브쿼리 : temp 
+        SELECT EMP_NO, SUM(SCORE) AS SCORE
+        FROM HR_GRADE
+        WHERE YEAR = 2022
+        GROUP BY EMP_NO
+    ) AS TEMP
+) AS G
+ON E.EMP_NO = G.EMP_NO
+WHERE G.RANKING = 1 #점수 가장 높은 직원
+ORDER BY G.SCORE DESC
+```
