@@ -6,7 +6,7 @@
 
 같은 결과를 도출하더라도 여러 표현법을 사용하고, 효율성을 따져보는 것이 중요합니다.
 
-**-[ISNULL] NULL처리하기 (SQL 고득점kit)**
+## [ISNULL] NULL처리하기 (SQL 고득점kit)
 
 [](https://school.programmers.co.kr/learn/courses/30/lessons/59410)
 
@@ -34,7 +34,7 @@ FROM ANIMAL_INS
 
 
 
-**-중성화 여부 파악하기**
+## 중성화 여부 파악하기
 
 [](https://school.programmers.co.kr/learn/courses/30/lessons/59409#qna)
 
